@@ -86,7 +86,6 @@ class Matrix:
 
         return Matrix(self.n, self.m, inverse_matrix)
 
-    # Works only for square matrices
     def rank(self) -> int:
         matrix = self.matrix.copy()
         for row in range(self.n):
