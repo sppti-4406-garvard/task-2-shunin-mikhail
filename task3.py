@@ -2,10 +2,10 @@ from matrix import Matrix
 
 
 def main():
-    matrix = Matrix(3, 3, [
-        [1, -2, 3],
-        [4, 0, 6],
-        [-7, 8, 9]
+    matrix = Matrix(3, 4, [
+        [1, -2, 3, 7],
+        [4, 0, 6, 4],
+        [-7, 8, 9, 3]
     ])
 
     print(matrix)

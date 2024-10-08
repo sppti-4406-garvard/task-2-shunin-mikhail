@@ -52,33 +52,6 @@ class Matrix:
     def transpose_static(matrix):
         return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
 
-    # Get minor of the matrix
-    @classmethod
-    def minor(cls, matrix: list, n: int, m: int):
-        res_matrix = []
-        for i in range(len(matrix)):
-            row_res_matrix = []
-            for j in range(len(matrix[0])):
-                if i == n or j == m: continue
-                row_res_matrix.append(matrix[i][j])
-            if row_res_matrix:
-                res_matrix.append(row_res_matrix)
-        return Matrix(len(matrix) - 1, len(matrix[0]) - 1, res_matrix)
-
-    # Find the determinant of the matrix
-    @classmethod
-    def det(cls, matrix: list) -> float | int:
-        if len(matrix) != len(matrix[0]):
-            raise ValueError('Можно вычислить определитель только на квадратной матрице.')
-
-        if len(matrix) == 2:
-            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-
-        det = 0
-        for i in range(len(matrix)):
-            det += ((-1) ** (i + 2)) * matrix[0][i] * Matrix.det(Matrix.minor(matrix, 0, i).matrix)       # +2 - normalize and +1 (first row always)
-        return det
-
     def inv(self):
         determinant = Matrix.det(self.matrix)
         if determinant == 0:
@@ -204,3 +177,30 @@ class Matrix:
                 rank -= 1
 
         return rank
+
+    # Get minor of the matrix
+    @staticmethod
+    def minor(matrix: list, n: int, m: int):
+        res_matrix = []
+        for i in range(len(matrix)):
+            row_res_matrix = []
+            for j in range(len(matrix[0])):
+                if i == n or j == m: continue
+                row_res_matrix.append(matrix[i][j])
+            if row_res_matrix:
+                res_matrix.append(row_res_matrix)
+        return Matrix(len(matrix) - 1, len(matrix[0]) - 1, res_matrix)
+
+    # Find the determinant of the matrix
+    @staticmethod
+    def det(matrix: list) -> float | int:
+        if len(matrix) != len(matrix[0]):
+            raise ValueError('Можно вычислить определитель только на квадратной матрице.')
+
+        if len(matrix) == 2:
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+
+        det = 0
+        for i in range(len(matrix)):
+            det += ((-1) ** (i + 2)) * matrix[0][i] * Matrix.det(Matrix.minor(matrix, 0, i).matrix)  # +2 - normalize and +1 (first row always)
+        return det
